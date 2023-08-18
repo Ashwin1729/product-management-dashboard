@@ -11,12 +11,13 @@
 }
 
 .icon {
-  margin-top: 20px;
+  margin-top: 22px;
   margin-left: 20px;
 }
 
 .titleIcon {
   color: white;
+  margin: 8px 0px;
 }
 
 .titleCard {

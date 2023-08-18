@@ -13,8 +13,10 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import AnalyticsOutlinedIcon from "@mui/icons-material/AnalyticsOutlined";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/application-context";
 
@@ -71,16 +73,25 @@ const navLinks = [
     id: 1,
     title: "Home",
     to: "/",
+    icon: <HomeOutlinedIcon />,
   },
   {
     id: 2,
-    title: "About",
-    to: "/about",
+    title: "Products",
+    to: "/products",
+    icon: <ShoppingCartOutlinedIcon />,
   },
   {
     id: 3,
+    title: "Analytics",
+    to: "/analytics",
+    icon: <AnalyticsOutlinedIcon />,
+  },
+  {
+    id: 4,
     title: "Settings",
     to: "/settings",
+    icon: <SettingsOutlinedIcon />,
   },
 ];
 
@@ -129,7 +140,7 @@ const SideBar = () => {
                     justifyContent: "center",
                   }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {obj.icon}
                 </ListItemIcon>
                 <ListItemText
                   primary={obj.title}

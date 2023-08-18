@@ -11,6 +11,7 @@ import CreditCardIcon from "@mui/icons-material/CreditCard";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import styles from "./Home.module.css";
 import AccordionModule from "../components/AccordionModule";
+import BarChart from "../charts/BarChart";
 
 const Home = () => {
   return (
@@ -114,7 +115,9 @@ const Home = () => {
           <Grid container spacing={2}>
             <Grid item xs={8}>
               <Card sx={{ height: 60 + "vh" }}>
-                <CardContent></CardContent>
+                <CardContent>
+                  <BarChart />
+                </CardContent>
               </Card>
             </Grid>
             <Grid item xs={4}>
