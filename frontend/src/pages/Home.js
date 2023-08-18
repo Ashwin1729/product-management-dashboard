@@ -1,59 +1,136 @@
 import React from "react";
 import SideBar from "../components/SideBar";
 import { Box } from "@mui/material";
-import { styled, useTheme } from "@mui/material/styles";
+import Card from "@mui/material/Card";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import NavBar from "../components/NavBar";
-
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "flex-end",
-  padding: theme.spacing(0, 1),
-  ...theme.mixins.toolbar,
-}));
+import CardContent from "@mui/material/CardContent";
+import Grid from "@mui/material/Grid";
+import PaymentsIcon from "@mui/icons-material/Payments";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import styles from "./Home.module.css";
+import AccordionModule from "../components/AccordionModule";
 
 const Home = () => {
   return (
-    <>
-      <Box height={40} />
+    <div className={styles.bgColor}>
+      <Box height={70} />
       <Box sx={{ display: "flex" }}>
         <SideBar />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <h3>Home</h3>
-          <Typography paragraph>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-            dolor purus non enim praesent elementum facilisis leo vel. Risus at
-            ultrices mi tempus imperdiet. Semper risus in hendrerit gravida
-            rutrum quisque non tellus. Convallis convallis tellus id interdum
-            velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean
-            sed adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-            integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-            eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-            quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-            vivamus at augue. At augue eget arcu dictum varius duis at
-            consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-            donec massa sapien faucibus et molestie ac.
-          </Typography>
-          <Typography paragraph>
-            Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-            ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-            elementum integer enim neque volutpat ac tincidunt. Ornare
-            suspendisse sed nisi lacus sed viverra tellus. Purus sit amet
-            volutpat consequat mauris. Elementum eu facilisis sed odio morbi.
-            Euismod lacinia at quis risus sed vulputate odio. Morbi tincidunt
-            ornare massa eget egestas purus viverra accumsan in. In hendrerit
-            gravida rutrum quisque non tellus orci ac. Pellentesque nec nam
-            aliquam sem et tortor. Habitant morbi tristique senectus et.
-            Adipiscing elit duis tristique sollicitudin nibh sit. Ornare aenean
-            euismod elementum nisi quis eleifend. Commodo viverra maecenas
-            accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam
-            ultrices sagittis orci a.
-          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={8}>
+              <Stack spacing={2} direction="row">
+                <Card
+                  sx={{ minWidth: 49 + "%", height: 152 }}
+                  className={styles.titleCard}
+                >
+                  <CardContent>
+                    <div className={styles.titleIcon}>
+                      <CreditCardIcon />
+                    </div>
+                    <Typography
+                      gutterBottom
+                      variant="h5"
+                      component="div"
+                      sx={{ color: "white" }}
+                    >
+                      $500.00
+                    </Typography>
+                    <Typography
+                      gutterBottom
+                      variant="body2"
+                      component="div"
+                      sx={{ color: "#ccd1d1" }}
+                    >
+                      Total Earnings
+                    </Typography>
+                  </CardContent>
+                </Card>
+                <Card
+                  sx={{ minWidth: 49 + "%", height: 152 }}
+                  className={styles.titleCardLight}
+                >
+                  <CardContent>
+                    <div className={styles.titleIcon}>
+                      <ShoppingCartIcon />
+                    </div>
+                    <Typography
+                      gutterBottom
+                      variant="h5"
+                      component="div"
+                      sx={{ color: "white" }}
+                    >
+                      $900.00
+                    </Typography>
+                    <Typography
+                      gutterBottom
+                      variant="body2"
+                      component="div"
+                      sx={{ color: "#ccd1d1" }}
+                    >
+                      Total Orders
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Stack>
+            </Grid>
+            <Grid item xs={4}>
+              <Stack spacing={2}>
+                <Card sx={{ maxWidth: 500 }}>
+                  <Stack spacing={2} direction="row">
+                    <div>
+                      <div className={styles.icon}>
+                        <PaymentsIcon />
+                      </div>
+                    </div>
+                    <div className={styles.income}>
+                      <span className={styles.price}>$203K</span>
+                      <br />
+                      <span className={styles.title}>Total Income</span>
+                    </div>
+                  </Stack>
+                </Card>
+                <Card sx={{ maxWidth: 500 }}>
+                  <Stack spacing={2} direction="row">
+                    <div>
+                      <div className={styles.icon}>
+                        <PaymentsIcon />
+                      </div>
+                    </div>
+                    <div className={styles.income}>
+                      <span className={styles.price}>$203K</span>
+                      <br />
+                      <span className={styles.title}>Total Income</span>
+                    </div>
+                  </Stack>
+                </Card>
+              </Stack>
+            </Grid>
+          </Grid>
+
+          <Box height={20} />
+          <Grid container spacing={2}>
+            <Grid item xs={8}>
+              <Card sx={{ height: 60 + "vh" }}>
+                <CardContent></CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={4}>
+              <Card sx={{ height: 60 + "vh" }}>
+                <CardContent>
+                  <div className={styles.income}>
+                    <span className={styles.price}>Popular Products</span>
+                  </div>
+                  <AccordionModule />
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
         </Box>
       </Box>
-    </>
+    </div>
   );
 };
 
