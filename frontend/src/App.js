@@ -6,6 +6,8 @@ import Products from "./pages/Products";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
 import NavBar from "./components/NavBar";
+import Login from "./components/Login";
+import SignUp from "./components/SignUp";
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
       <NavBar />
       <Routes>
         <Route path="/" exact element={<Home />} />
+        <Route path="/login" exact element={<Login />} />
+        <Route path="/sign_up" exact element={<SignUp />} />
         <Route path="/products" exact element={<Products />} />
         <Route path="/analytics" exact element={<Analytics />} />
         <Route path="/settings" exact element={<Settings />} />

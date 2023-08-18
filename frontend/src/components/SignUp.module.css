@@ -1,0 +1,91 @@
+.form_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  margin: 40px;
+  margin-top: 5rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+  margin: 30px 60px;
+}
+
+.top_logo > img {
+  width: 80%;
+  height: 80%;
+}
+
+.login_card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  padding: 30px 80px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background-color: white;
+  z-index: 1;
+}
+
+.login_card > form {
+  width: 100%;
+}
+
+.login_card > p {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 5px;
+}
+
+.form_field {
+  margin: 30px 0px;
+}
+
+.submit_button {
+  background-color: #3766e8;
+  color: white;
+  width: 100%;
+  margin: 20px 0px;
+  padding: 10px 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.submit_button:hover {
+  opacity: 0.6;
+}
+
+.login_footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 30px 10px;
+  z-index: 1;
+}
+
+.create_account {
+  padding: 5px;
+  margin: 5px;
+  color: #545454;
+}
+
+.create_account > a {
+  text-decoration: none;
+  color: #3766e8;
+  border-bottom: 2px solid #3766e8;
+}
+
+.privacy_policy {
+  padding: 5px;
+  margin: 5px;
+  color: #545454;
+}
