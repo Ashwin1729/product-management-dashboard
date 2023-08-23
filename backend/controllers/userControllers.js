@@ -37,7 +37,7 @@ const registerUser = asyncHandler(async (req, res) => {
   if (result) {
     res.status(201).json({
       id: data.id,
-      name: data.full_name,
+      full_name: data.full_name,
       email: data.email,
       pic: data.pic,
       token: generateJWT(data.id),
@@ -48,7 +48,38 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-const authUser = asyncHandler(async (req, res) => {});
+const authUser = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+
+  const result = await User.findAll({
+    where: {
+      email: email,
+    },
+  });
+
+  let user;
+
+  if (result.length > 0 && result[0].dataValues) {
+    user = result[0].dataValues;
+  }
+
+  console.log(user);
+
+  const matchedPassword = await bcrypt.compare(password, user.password);
+
+  if (user && matchedPassword) {
+    res.json({
+      id: user.id,
+      full_name: user.full_name,
+      email: user.email,
+      pic: user.pic,
+      token: generateJWT(user._id),
+    });
+  } else {
+    res.status(401);
+    throw new Error("Invalid Email or Password");
+  }
+});
 
 module.exports = {
   registerUser,

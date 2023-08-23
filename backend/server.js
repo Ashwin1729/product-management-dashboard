@@ -15,8 +15,8 @@ server.get("/", (req, res) => {
 });
 
 server.use("/api/users", userRoutes);
-server.get("/api/products", (req, res) => {});
-server.get("/api/products/:product_id", (req, res) => {});
+// server.use("/api/products", (req, res) => {});
+// server.use("/api/products/:product_id", (req, res) => {});
 
 const PORT = process.env.PORT || 5000;
 
