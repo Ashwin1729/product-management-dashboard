@@ -1,4 +1,5 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const AppContext = createContext({
   sideBar: "",
@@ -7,6 +8,18 @@ export const AppContext = createContext({
 
 const AppContextProvider = (props) => {
   const [sideBar, setSideBar] = useState(true);
+  const [user, setUser] = useState();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    setUser(userInfo);
+
+    if (!userInfo) {
+      navigate("/login");
+    }
+  }, []);
 
   const updateSideBar = () => {
     setSideBar(!sideBar);
@@ -17,6 +30,8 @@ const AppContextProvider = (props) => {
   const store = {
     sideBar,
     updateSideBar,
+    user,
+    setUser,
   };
 
   return (

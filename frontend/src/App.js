@@ -12,14 +12,49 @@ import SignUp from "./components/SignUp";
 function App() {
   return (
     <div>
-      <NavBar />
       <Routes>
-        <Route path="/" exact element={<Home />} />
+        <Route
+          path="/"
+          exact
+          element={
+            <>
+              <NavBar />
+              <Home />
+            </>
+          }
+        />
         <Route path="/login" exact element={<Login />} />
         <Route path="/sign_up" exact element={<SignUp />} />
-        <Route path="/products" exact element={<Products />} />
-        <Route path="/analytics" exact element={<Analytics />} />
-        <Route path="/settings" exact element={<Settings />} />
+        <Route
+          path="/products"
+          exact
+          element={
+            <>
+              <NavBar />
+              <Products />
+            </>
+          }
+        />
+        <Route
+          path="/analytics"
+          exact
+          element={
+            <>
+              <NavBar />
+              <Analytics />
+            </>
+          }
+        />
+        <Route
+          path="/settings"
+          exact
+          element={
+            <>
+              <NavBar />
+              <Settings />
+            </>
+          }
+        />
       </Routes>
     </div>
   );

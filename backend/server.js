@@ -1,15 +1,20 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const sequelize = require("./utils/database");
-const Product = require("./models/product");
+const userRoutes = require("./routes/userRoutes");
+const Product = require("./models/productModel");
+const User = require("./models/userModel");
 
 const server = express();
 dotenv.config();
+
+server.use(express.json());
 
 server.get("/", (req, res) => {
   res.send("API is running successfully ...");
 });
 
+server.use("/api/users", userRoutes);
 server.get("/api/products", (req, res) => {});
 server.get("/api/products/:product_id", (req, res) => {});
 
