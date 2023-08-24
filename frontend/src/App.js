@@ -8,6 +8,7 @@ import Settings from "./pages/Settings";
 import NavBar from "./components/NavBar";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
           }
         />
       </Routes>
+      <ToastContainer />
     </div>
   );
 }

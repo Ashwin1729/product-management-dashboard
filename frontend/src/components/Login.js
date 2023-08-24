@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styles from "./Login.module.css";
 import { TextField } from "@mui/material";
 
@@ -9,20 +9,102 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { AppContext } from "../context/application-context";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  const appCtx = useContext(AppContext);
+  const user = appCtx.user;
+  const setUser = appCtx.setUser;
+
+  const notifyIncompleteFields = () =>
+    toast.warn("Please fill all the details !", {
+      position: "bottom-left",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+  const notifyError = () =>
+    toast.error("Error Occured !", {
+      position: "bottom-left",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+  const notifyLoginSuccessful = () =>
+    toast.success("Login Successful !", {
+      position: "bottom-left",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (event) => {
+
+  const submitHandler = async (event) => {
     event.preventDefault();
+    setLoading(true);
+    if (!email || !password) {
+      notifyIncompleteFields();
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+
+      const { data } = await axios.post(
+        "/api/users/login",
+        { email, password },
+        config
+      );
+
+      notifyLoginSuccessful();
+      setUser(data);
+      console.log(data);
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      setLoading(false);
+      navigate("/");
+    } catch (error) {
+      notifyError();
+      notifyLoginSuccessful();
+      setLoading(false);
+    }
   };
 
   return (
     <div className={styles.form_container}>
       <div className={styles.login_card}>
         <p>Sign in to your Account</p>
-        <form>
+        <form onSubmit={submitHandler}>
           <div className={styles.form_field}>
             <TextField
               id="standard-basic"
@@ -30,6 +112,7 @@ const Login = () => {
               variant="standard"
               fullWidth
               size="small"
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className={styles.form_field}>
@@ -40,12 +123,12 @@ const Login = () => {
               <Input
                 id="standard-adornment-password"
                 type={showPassword ? "text" : "password"}
+                onChange={(e) => setPassword(e.target.value)}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
                       onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
                     >
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
