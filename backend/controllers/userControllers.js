@@ -4,11 +4,16 @@ const generateJWT = require("../config/generateJWT");
 const bcrypt = require("bcryptjs");
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, pic } = req.body;
+  const { name, email, password, username, confirmPassword } = req.body;
 
-  if (!name || !email || !password) {
+  if (!name || !email || !password || !username || !confirmPassword) {
     res.status(400);
     throw new Error("Please enter all the required fields");
+  }
+
+  if (password !== confirmPassword) {
+    res.status(400);
+    throw new Error("Password and the password confirmed should be same");
   }
 
   // user exist logic
@@ -28,8 +33,8 @@ const registerUser = asyncHandler(async (req, res) => {
   const result = await User.create({
     full_name: name,
     email,
+    username,
     password: hashedPassword,
-    pic,
   });
 
   const data = result.toJSON();
@@ -39,7 +44,7 @@ const registerUser = asyncHandler(async (req, res) => {
       id: data.id,
       full_name: data.full_name,
       email: data.email,
-      pic: data.pic,
+      username: data.username,
       token: generateJWT(data.id),
     });
   } else {
@@ -63,7 +68,10 @@ const authUser = asyncHandler(async (req, res) => {
     user = result[0].dataValues;
   }
 
-  console.log(user);
+  if (!user) {
+    res.status(400);
+    throw new Error("No such user exists. Please SignUp to continue!");
+  }
 
   const matchedPassword = await bcrypt.compare(password, user.password);
 
@@ -72,8 +80,8 @@ const authUser = asyncHandler(async (req, res) => {
       id: user.id,
       full_name: user.full_name,
       email: user.email,
-      pic: user.pic,
-      token: generateJWT(user._id),
+      username: user.username,
+      token: generateJWT(user.id),
     });
   } else {
     res.status(401);

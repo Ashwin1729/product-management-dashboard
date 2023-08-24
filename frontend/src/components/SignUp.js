@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { TextField } from "@mui/material";
-
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Input from "@mui/material/Input";
@@ -8,42 +7,129 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
-import { Link } from "react-router-dom";
-import Button from "@mui/joy/Button";
-import SvgIcon from "@mui/joy/SvgIcon";
-import { styled } from "@mui/joy";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./SignUp.module.css";
-
-const VisuallyHiddenInput = styled("input")`
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  height: 1px;
-  overflow: hidden;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  white-space: nowrap;
-  width: 1px;
-`;
+import { AppContext } from "../context/application-context";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
 
-  const [confirmPassword, setConfirmPassword] = useState(false);
-  const handleClickConfirmPassword = () => setConfirmPassword((show) => !show);
-  const handleMouseDownConfirmPassword = (event) => {
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const showConfirmPasswordHandler = () =>
+    setShowConfirmPassword((show) => !show);
+
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  const appCtx = useContext(AppContext);
+  const user = appCtx.user;
+  const setUser = appCtx.setUser;
+
+  const notifyIncompleteFields = () =>
+    toast.warn("Please fill all the details !", {
+      position: "bottom-left",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+  const notifyError = () =>
+    toast.error("Error Occured !", {
+      position: "bottom-left",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+  const notifyPasswordMatch = () =>
+    toast.warn("Passwords Do Not Match", {
+      position: "bottom-left",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+  const notifyRegisterationSuccessful = () =>
+    toast.success("Registeration Successful !", {
+      position: "bottom-left",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+  const submitHandler = async (event) => {
     event.preventDefault();
+
+    if (!fullName || !email || !username || !password || !confirmPassword) {
+      notifyIncompleteFields();
+      console.log("............1");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      notifyPasswordMatch();
+      console.log("............2");
+      return;
+    }
+
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+      const { data } = await axios.post(
+        "/api/users/sign_up",
+        {
+          name: fullName,
+          email,
+          password,
+          username,
+          confirmPassword,
+        },
+        config
+      );
+
+      notifyRegisterationSuccessful();
+
+      setUser(data);
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      navigate("/");
+    } catch (error) {
+      notifyError();
+    }
   };
 
   return (
     <div className={styles.form_container}>
       <div className={styles.login_card}>
         <p>Sign up as a New User!</p>
-        <form>
+        <form onSubmit={submitHandler}>
           <div className={styles.form_field}>
             <TextField
               id="standard-basic"
@@ -52,6 +138,7 @@ const SignUp = () => {
               variant="standard"
               fullWidth
               size="small"
+              onChange={(e) => setFullName(e.target.value)}
             />
           </div>
           <div className={styles.form_field}>
@@ -62,6 +149,7 @@ const SignUp = () => {
               variant="standard"
               fullWidth
               size="small"
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className={styles.form_field}>
@@ -71,23 +159,24 @@ const SignUp = () => {
               variant="standard"
               fullWidth
               size="small"
+              onChange={(e) => setUsername(e.target.value)}
             />
           </div>
 
           <div className={styles.form_field}>
             <FormControl sx={{ width: "100%" }} variant="standard">
               <InputLabel htmlFor="standard-adornment-password">
-                Choose Password
+                Password
               </InputLabel>
               <Input
                 id="standard-adornment-password"
                 type={showPassword ? "text" : "password"}
+                onChange={(e) => setPassword(e.target.value)}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
                       onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
                     >
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
@@ -103,49 +192,20 @@ const SignUp = () => {
               </InputLabel>
               <Input
                 id="standard-adornment-password"
-                type={confirmPassword ? "text" : "password"}
+                type={showConfirmPassword ? "text" : "password"}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
-                      onClick={handleClickConfirmPassword}
-                      onMouseDown={handleMouseDownConfirmPassword}
+                      onClick={showConfirmPasswordHandler}
                     >
-                      {confirmPassword ? <VisibilityOff /> : <Visibility />}
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 }
               />
             </FormControl>
-          </div>
-          <div className={styles.form_field}>
-            <Button
-              component="label"
-              role={undefined}
-              tabIndex={-1}
-              variant="outlined"
-              color="neutral"
-              startDecorator={
-                <SvgIcon>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
-                    />
-                  </svg>
-                </SvgIcon>
-              }
-            >
-              Upload Profile Pic
-              <VisuallyHiddenInput type="file" />
-            </Button>
           </div>
           <button className={styles.submit_button} type="submit">
             Sign Up

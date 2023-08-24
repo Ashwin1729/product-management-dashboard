@@ -89,13 +89,11 @@ const Login = () => {
 
       notifyLoginSuccessful();
       setUser(data);
-      console.log(data);
       localStorage.setItem("userInfo", JSON.stringify(data));
       setLoading(false);
       navigate("/");
     } catch (error) {
       notifyError();
-      notifyLoginSuccessful();
       setLoading(false);
     }
   };
