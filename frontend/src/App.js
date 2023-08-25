@@ -9,6 +9,7 @@ import NavBar from "./components/NavBar";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import { ToastContainer } from "react-toastify";
+import AddProduct from "./pages/AddProduct";
 
 function App() {
   return (
@@ -53,6 +54,16 @@ function App() {
             <>
               <NavBar />
               <Settings />
+            </>
+          }
+        />
+        <Route
+          path="/add-product"
+          exact
+          element={
+            <>
+              <NavBar />
+              <AddProduct />
             </>
           }
         />
