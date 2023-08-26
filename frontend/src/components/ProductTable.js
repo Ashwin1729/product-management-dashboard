@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useContext } from "react";
 import { AgGridReact } from "ag-grid-react";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
@@ -6,6 +6,8 @@ import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import styles from "./ProductTable.module.css";
+import { Link } from "react-router-dom";
+import { AppContext } from "../context/application-context";
 
 const imageRender = () => {
   return (
@@ -18,11 +20,17 @@ const imageRender = () => {
   );
 };
 
-const actionsRender = () => {
+const actionsRender = (props) => {
   return (
     <div className={styles.action_container}>
       <div className={styles.action}>
-        <ModeEditOutlinedIcon />
+        <Link to={`/edit-product/${props.data?.ID}`}>
+          <ModeEditOutlinedIcon
+            style={{
+              color: "black",
+            }}
+          />
+        </Link>
       </div>
       <div className={styles.action}>
         <DeleteOutlinedIcon />
@@ -31,36 +39,15 @@ const actionsRender = () => {
   );
 };
 
-const productsData = [
-  {
-    ID: 1,
-    Title: "A Book",
-    Image: "",
-    Price: "$500",
-    Quantity: 1500,
-    Action: "",
-  },
-  {
-    ID: 2,
-    Title: "B Book",
-    Price: "$500",
-    Quantity: 1500,
-    Action: "",
-  },
-  {
-    ID: 3,
-    Title: "C Book",
-    Price: "$500",
-    Quantity: 1500,
-    Action: "",
-  },
-];
+const priceRender = (props) => {
+  return "$" + props.value;
+};
 
 const columnData = [
   { field: "ID", filter: true, sortable: true, width: 100 },
   { field: "Title", filter: true, sortable: true },
   { field: "Image", filter: true, sortable: true, cellRenderer: imageRender },
-  { field: "Price", sortable: true, filter: true },
+  { field: "Price", sortable: true, filter: true, cellRenderer: priceRender },
   { field: "Quantity", filter: true, sortable: true },
   {
     field: "Action",
@@ -72,8 +59,10 @@ const columnData = [
 
 const ProductTable = () => {
   const gridRef = useRef(); // Optional - for accessing Grid's API
-  const [rowData, setRowData] = useState(productsData);
   const [columnDefs, setColumnDefs] = useState(columnData);
+
+  const appCtx = useContext(AppContext);
+  const productsData = appCtx.productsData;
 
   // Example of consuming Grid Event
   const cellClickedListener = useCallback((event) => {
@@ -102,7 +91,7 @@ const ProductTable = () => {
       >
         <AgGridReact
           ref={gridRef}
-          rowData={rowData}
+          rowData={productsData}
           columnDefs={columnDefs}
           defaultColDef={{
             sortable: true,

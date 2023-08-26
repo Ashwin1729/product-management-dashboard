@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Box, TextField } from "@mui/material";
 import Button from "@mui/joy/Button";
 import SvgIcon from "@mui/joy/SvgIcon";
@@ -6,7 +6,9 @@ import { styled } from "@mui/joy";
 import SideBar from "../components/SideBar";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import styles from "./AddProduct.module.css";
+import styles from "./EditProduct.module.css";
+import { useParams } from "react-router-dom";
+import { AppContext } from "../context/application-context";
 
 const VisuallyHiddenInput = styled("input")`
   clip: rect(0 0 0 0);
@@ -20,13 +22,43 @@ const VisuallyHiddenInput = styled("input")`
   width: 1px;
 `;
 
-const AddProduct = () => {
+const EditProduct = () => {
   const [productName, setProductName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [quantity, setQuantity] = useState("");
   const [pic, setPic] = useState();
   const [picLoading, setPicLoading] = useState(false);
+  const [editMode, setEditMode] = useState("");
+
+  const { productId } = useParams();
+
+  const appCtx = useContext(AppContext);
+  const productsData = appCtx.productsData;
+
+  useEffect(() => {
+    const currentProduct = productsData.filter(
+      (data) => data.ID?.toString() === productId?.toString()
+    );
+
+    if (currentProduct.length > 0) {
+      const currentProductData = currentProduct[0];
+      setProductName(currentProductData?.Title);
+      setPrice(currentProductData.Price);
+      setDescription(currentProductData.Description);
+      setQuantity(currentProductData.Quantity);
+    }
+  }, [productsData]);
+
+  // console.log(editMode, currentProductData);
+
+  useEffect(() => {
+    if (productId) {
+      setEditMode("update");
+    } else {
+      setEditMode("add");
+    }
+  }, [productId]);
 
   const notifyUploadPic = () =>
     toast.warn("Please Select an Image !", {
@@ -91,10 +123,11 @@ const AddProduct = () => {
   const submitHandler = (event) => {
     event.preventDefault();
     console.log({
-      productName,
+      title: productName,
       price,
       description,
       quantity,
+      imageUrl: pic,
     });
   };
 
@@ -106,13 +139,16 @@ const AddProduct = () => {
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <div className={styles.form_container}>
             <div className={styles.login_card}>
-              <p>Add a New Product</p>
+              <p>
+                {editMode === "update" ? "Edit Product" : "Add a New Product"}
+              </p>
               <form onSubmit={submitHandler}>
                 <div className={styles.form_field}>
                   <TextField
                     id="standard-basic"
                     label="Product Name"
                     type="text"
+                    value={productName}
                     variant="standard"
                     fullWidth
                     size="small"
@@ -124,6 +160,7 @@ const AddProduct = () => {
                     id="standard-basic"
                     label="Price"
                     type="number"
+                    value={price}
                     variant="standard"
                     fullWidth
                     size="small"
@@ -135,6 +172,7 @@ const AddProduct = () => {
                     id="standard-basic"
                     label="Description"
                     multiline
+                    value={description}
                     variant="standard"
                     fullWidth
                     size="small"
@@ -146,6 +184,10 @@ const AddProduct = () => {
                     id="standard-basic"
                     label="Quantity"
                     type="number"
+                    // defaultValue={
+                    //   editMode === "update" ? currentProductData?.Quantity : ""
+                    // }
+                    value={quantity}
                     variant="standard"
                     fullWidth
                     size="small"
@@ -178,7 +220,10 @@ const AddProduct = () => {
                       </SvgIcon>
                     }
                   >
-                    Upload Product Image
+                    {editMode === "update"
+                      ? "Upload New Image"
+                      : "Upload Product Image"}
+
                     <VisuallyHiddenInput
                       type="file"
                       onChange={(e) => postDetails(e.target.files[0])}
@@ -187,7 +232,7 @@ const AddProduct = () => {
                 </div>
 
                 <button className={styles.submit_button} type="submit">
-                  Add Product
+                  {editMode === "update" ? "Edit Product" : "Add Product"}
                 </button>
               </form>
             </div>
@@ -198,4 +243,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default EditProduct;
