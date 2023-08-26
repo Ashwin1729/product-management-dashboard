@@ -103,6 +103,8 @@ const ProductTable = () => {
           rowSelection="multiple"
           onCellClicked={cellClickedListener}
           resizable={true}
+          pagination={true}
+          paginationAutoPageSize={true}
         />
       </div>
     </div>
