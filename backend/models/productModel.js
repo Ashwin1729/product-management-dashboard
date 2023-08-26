@@ -23,7 +23,7 @@ const Product = sequelize.define("product", {
     allowNull: false,
   },
   quantity: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.DOUBLE,
     allowNull: false,
   },
 });
