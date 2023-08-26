@@ -1,13 +1,12 @@
 import React, { useState, useRef, useCallback, useContext } from "react";
 import { AgGridReact } from "ag-grid-react";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
-import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import styles from "./ProductTable.module.css";
 import { Link } from "react-router-dom";
 import { AppContext } from "../context/application-context";
+import DeleteModal from "./DeleteModal";
 
 const imageRender = () => {
   return (
@@ -33,7 +32,7 @@ const actionsRender = (props) => {
         </Link>
       </div>
       <div className={styles.action}>
-        <DeleteOutlinedIcon />
+        <DeleteModal />
       </div>
     </div>
   );

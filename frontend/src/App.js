@@ -6,8 +6,8 @@ import Products from "./pages/Products";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
 import NavBar from "./components/NavBar";
-import Login from "./components/Login";
-import SignUp from "./components/SignUp";
+import Login from "./components/authentication/Login";
+import SignUp from "./components/authentication/SignUp";
 import { ToastContainer } from "react-toastify";
 import EditProduct from "./pages/EditProduct";
 
