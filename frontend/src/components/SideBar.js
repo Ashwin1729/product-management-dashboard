@@ -17,6 +17,7 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import AnalyticsOutlinedIcon from "@mui/icons-material/AnalyticsOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/application-context";
 
@@ -92,6 +93,12 @@ const navLinks = [
     title: "Settings",
     to: "/settings",
     icon: <SettingsOutlinedIcon />,
+  },
+  {
+    id: 5,
+    title: "Logout",
+    to: "/logout",
+    icon: <LogoutIcon />,
   },
 ];
 

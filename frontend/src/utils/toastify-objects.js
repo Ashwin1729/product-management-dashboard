@@ -85,6 +85,18 @@ export const notifyDeleteProductSuccessful = () =>
     theme: "light",
   });
 
+export const notifyLogoutSuccessful = () =>
+  toast.success("Logged out successfully !", {
+    position: "bottom-left",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+
 export const notifyError = () =>
   toast.error("Error Occured !", {
     position: "bottom-left",

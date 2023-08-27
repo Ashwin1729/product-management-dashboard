@@ -10,6 +10,7 @@ import Login from "./components/authentication/Login";
 import SignUp from "./components/authentication/SignUp";
 import { ToastContainer } from "react-toastify";
 import EditProduct from "./pages/EditProduct";
+import Logout from "./components/authentication/Logout";
 
 function App() {
   return (
@@ -54,6 +55,16 @@ function App() {
             <>
               <NavBar />
               <Settings />
+            </>
+          }
+        />
+        <Route
+          path="/logout"
+          exact
+          element={
+            <>
+              <NavBar />
+              <Logout />
             </>
           }
         />
