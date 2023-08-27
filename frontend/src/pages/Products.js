@@ -5,6 +5,7 @@ import ProductTable from "../components/ProductTable";
 import { Link } from "react-router-dom";
 import { AppContext } from "../context/application-context";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { transformProducts } from "../utils/data";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -32,7 +33,7 @@ const Products = () => {
 
   const fetchProducts = async () => {
     setLoading(true);
-    console.log(user);
+
     try {
       const config = {
         headers: {

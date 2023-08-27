@@ -4,11 +4,18 @@ import Button from "@mui/joy/Button";
 import SvgIcon from "@mui/joy/SvgIcon";
 import { styled } from "@mui/joy";
 import SideBar from "../components/SideBar";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styles from "./EditProduct.module.css";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { AppContext } from "../context/application-context";
+import {
+  notifyUploadPic,
+  notifyPicUploadSuccessful,
+  notifyIncompleteFields,
+  notifyAddProductSuccessful,
+  notifyError,
+} from "../utils/toastify-objects";
+import axios from "axios";
 
 const VisuallyHiddenInput = styled("input")`
   clip: rect(0 0 0 0);
@@ -32,9 +39,14 @@ const EditProduct = () => {
   const [editMode, setEditMode] = useState("");
 
   const { productId } = useParams();
+  const navigate = useNavigate();
 
+  // accessing data from context api
   const appCtx = useContext(AppContext);
   const productsData = appCtx.productsData;
+  const user = appCtx.user;
+  const fetchAgain = appCtx.fetchAgain;
+  const setFetchAgain = appCtx.setFetchAgain;
 
   useEffect(() => {
     const currentProduct = productsData.filter(
@@ -51,8 +63,6 @@ const EditProduct = () => {
     }
   }, [productsData]);
 
-  // console.log(editMode, currentProductData);
-
   useEffect(() => {
     if (productId) {
       setEditMode("update");
@@ -60,30 +70,6 @@ const EditProduct = () => {
       setEditMode("add");
     }
   }, [productId]);
-
-  const notifyUploadPic = () =>
-    toast.warn("Please Select an Image !", {
-      position: "bottom-left",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-
-  const notifyPicUploadSuccessful = () =>
-    toast.success("Image Uploaded !", {
-      position: "bottom-left",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
 
   const postDetails = (pics) => {
     setPicLoading(true);
@@ -121,15 +107,48 @@ const EditProduct = () => {
     }
   };
 
-  const submitHandler = (event) => {
+  const submitHandler = async (event) => {
     event.preventDefault();
-    console.log({
-      title: productName,
-      price,
-      description,
-      quantity,
-      imageUrl: pic,
-    });
+
+    if (!productName || !price || !description || !quantity || !pic) {
+      notifyIncompleteFields();
+      return;
+    }
+
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          authorization: `Bearer ${user.token}`,
+        },
+      };
+
+      const productData = {
+        title: productName,
+        price,
+        imageUrl: pic,
+        description,
+        quantity,
+      };
+
+      const { data } = await axios.post(
+        "/api/products/create-products",
+        productData,
+        config
+      );
+
+      notifyAddProductSuccessful();
+
+      setFetchAgain(!fetchAgain);
+      navigate("/products");
+    } catch (error) {
+      notifyError();
+    }
+  };
+
+  const editProductHandler = (event) => {
+    event.preventDefault();
+    console.log("Edit Handler bro :)");
   };
 
   return (
@@ -143,7 +162,11 @@ const EditProduct = () => {
               <p>
                 {editMode === "update" ? "Edit Product" : "Add a New Product"}
               </p>
-              <form onSubmit={submitHandler}>
+              <form
+                onSubmit={
+                  editMode === "update" ? editProductHandler : submitHandler
+                }
+              >
                 <div className={styles.form_field}>
                   <TextField
                     id="standard-basic"

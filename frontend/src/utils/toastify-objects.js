@@ -1,0 +1,62 @@
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+export const notifyUploadPic = () =>
+  toast.warn("Please Select an Image !", {
+    position: "bottom-left",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+
+export const notifyPicUploadSuccessful = () =>
+  toast.success("Image Uploaded !", {
+    position: "bottom-left",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+
+export const notifyIncompleteFields = () =>
+  toast.warn("Please fill all the details !", {
+    position: "bottom-left",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+
+export const notifyAddProductSuccessful = () =>
+  toast.success("Product added Successfully !", {
+    position: "bottom-left",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+
+export const notifyError = () =>
+  toast.error("Error Occured !", {
+    position: "bottom-left",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
