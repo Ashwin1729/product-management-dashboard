@@ -1,8 +1,9 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const sequelize = require("./utils/database");
+const sequelize = require("./config/database");
 const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
+const { notFound, errorHandler } = require("./middlewares/errorMiddlewares");
 const Product = require("./models/productModel");
 const User = require("./models/userModel");
 
@@ -17,6 +18,8 @@ server.get("/", (req, res) => {
 
 server.use("/api/users", userRoutes);
 server.use("/api/products", productRoutes);
+server.use(notFound);
+server.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 

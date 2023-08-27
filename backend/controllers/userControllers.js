@@ -2,6 +2,7 @@ const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const generateJWT = require("../config/generateJWT");
 const bcrypt = require("bcryptjs");
+const { Op } = require("sequelize");
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password, username, confirmPassword } = req.body;
@@ -25,7 +26,18 @@ const registerUser = asyncHandler(async (req, res) => {
 
   if (findUser.length > 0) {
     res.status(400);
-    throw new Error("User Already Exists");
+    throw new Error("User with that email already exists");
+  }
+
+  const findUserByUsername = await User.findAll({
+    where: {
+      username: username,
+    },
+  });
+
+  if (findUserByUsername.length > 0) {
+    res.status(400);
+    throw new Error("User with that username already exists");
   }
 
   const hashedPassword = await bcrypt.hash(password, 12);
@@ -58,7 +70,7 @@ const authUser = asyncHandler(async (req, res) => {
 
   const result = await User.findAll({
     where: {
-      email: email,
+      [Op.or]: [{ email: email }, { username: email }],
     },
   });
 
