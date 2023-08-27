@@ -38,7 +38,19 @@ export const notifyIncompleteFields = () =>
   });
 
 export const notifyAddProductSuccessful = () =>
-  toast.success("Product added Successfully !", {
+  toast.success("Product added successfully !", {
+    position: "bottom-left",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+
+export const notifyEditProductSuccessful = () =>
+  toast.success("Product edited successfully !", {
     position: "bottom-left",
     autoClose: 5000,
     hideProgressBar: false,

@@ -13,6 +13,7 @@ import {
   notifyPicUploadSuccessful,
   notifyIncompleteFields,
   notifyAddProductSuccessful,
+  notifyEditProductSuccessful,
   notifyError,
 } from "../utils/toastify-objects";
 import axios from "axios";
@@ -146,9 +147,43 @@ const EditProduct = () => {
     }
   };
 
-  const editProductHandler = (event) => {
+  const editProductHandler = async (event) => {
     event.preventDefault();
-    console.log("Edit Handler bro :)");
+
+    if (!productName || !price || !description || !quantity || !pic) {
+      notifyIncompleteFields();
+      return;
+    }
+
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          authorization: `Bearer ${user.token}`,
+        },
+      };
+
+      const productData = {
+        title: productName,
+        price,
+        imageUrl: pic,
+        description,
+        quantity,
+      };
+
+      const { data } = await axios.put(
+        `/api/products/edit-products/${productId}`,
+        productData,
+        config
+      );
+
+      notifyEditProductSuccessful();
+
+      setFetchAgain(!fetchAgain);
+      navigate("/products");
+    } catch (error) {
+      notifyError();
+    }
   };
 
   return (
