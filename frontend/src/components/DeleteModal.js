@@ -1,10 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import Typography from "@mui/material/Typography";
 import { useSpring, animated } from "@react-spring/web";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import {
+  notifyUndefinedProductId,
+  notifyError,
+  notifyDeleteProductSuccessful,
+} from "../utils/toastify-objects";
+import { AppContext } from "../context/application-context";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import styles from "./DeleteModal.module.css";
 
 const Fade = React.forwardRef(function Fade(props, ref) {
@@ -39,12 +46,43 @@ const Fade = React.forwardRef(function Fade(props, ref) {
   );
 });
 
-const DeleteModal = () => {
+const DeleteModal = ({ productId }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const productDeleteHandler = () => {};
+  const navigate = useNavigate();
+
+  const appCtx = useContext(AppContext);
+  const user = appCtx.user;
+  const fetchAgain = appCtx.fetchAgain;
+  const setFetchAgain = appCtx.setFetchAgain;
+
+  const productDeleteHandler = async () => {
+    if (!productId) {
+      notifyUndefinedProductId();
+      return;
+    }
+
+    try {
+      const config = {
+        headers: {
+          authorization: `Bearer ${user.token}`,
+        },
+      };
+
+      const { data } = await axios.delete(
+        `/api/products/delete-products/${productId}`,
+        config
+      );
+
+      notifyDeleteProductSuccessful();
+      setFetchAgain(!fetchAgain);
+      navigate("/products");
+    } catch (error) {
+      notifyError();
+    }
+  };
 
   return (
     <>

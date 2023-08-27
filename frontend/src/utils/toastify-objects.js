@@ -61,6 +61,30 @@ export const notifyEditProductSuccessful = () =>
     theme: "light",
   });
 
+export const notifyUndefinedProductId = () =>
+  toast.warn("Product Id is not defined", {
+    position: "bottom-left",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+
+export const notifyDeleteProductSuccessful = () =>
+  toast.success("Product deleted successfully !", {
+    position: "bottom-left",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+
 export const notifyError = () =>
   toast.error("Error Occured !", {
     position: "bottom-left",

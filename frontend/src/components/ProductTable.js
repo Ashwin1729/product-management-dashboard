@@ -21,10 +21,12 @@ const imageRender = (props) => {
 };
 
 const actionsRender = (props) => {
+  const productId = props.data?.ID;
+
   return (
     <div className={styles.action_container}>
       <div className={styles.action}>
-        <Link to={`/edit-product/${props.data?.ID}`}>
+        <Link to={`/edit-product/${productId}`}>
           <ModeEditOutlinedIcon
             style={{
               color: "black",
@@ -33,7 +35,7 @@ const actionsRender = (props) => {
         </Link>
       </div>
       <div className={styles.action}>
-        <DeleteModal />
+        <DeleteModal productId={productId} />
       </div>
     </div>
   );
