@@ -44,9 +44,10 @@ const EditProduct = () => {
     if (currentProduct.length > 0) {
       const currentProductData = currentProduct[0];
       setProductName(currentProductData?.Title);
-      setPrice(currentProductData.Price);
-      setDescription(currentProductData.Description);
-      setQuantity(currentProductData.Quantity);
+      setPrice(currentProductData?.Price);
+      setPic(currentProductData?.ImageURL);
+      setDescription(currentProductData?.Description);
+      setQuantity(currentProductData?.Quantity);
     }
   }, [productsData]);
 
@@ -184,9 +185,6 @@ const EditProduct = () => {
                     id="standard-basic"
                     label="Quantity"
                     type="number"
-                    // defaultValue={
-                    //   editMode === "update" ? currentProductData?.Quantity : ""
-                    // }
                     value={quantity}
                     variant="standard"
                     fullWidth

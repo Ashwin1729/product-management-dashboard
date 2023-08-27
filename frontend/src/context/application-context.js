@@ -10,6 +10,7 @@ const AppContextProvider = (props) => {
   const [sideBar, setSideBar] = useState(true);
   const [user, setUser] = useState();
   const [productsData, setProductsData] = useState([]);
+  const [fetchAgain, setFetchAgain] = useState(false);
 
   const navigate = useNavigate();
 
@@ -21,37 +22,6 @@ const AppContextProvider = (props) => {
     if (!userInfo) {
       navigate("/login");
     }
-  }, []);
-
-  // fetching products data
-  useEffect(() => {
-    setProductsData([
-      {
-        ID: 1,
-        Title: "A Book",
-        Image: "",
-        Price: 500,
-        Description: "A book is awesome!",
-        Quantity: 1500,
-        Action: "1",
-      },
-      {
-        ID: 2,
-        Title: "B Book",
-        Price: 600,
-        Description: "B book is awesome!",
-        Quantity: 1500,
-        Action: "2",
-      },
-      {
-        ID: 3,
-        Title: "C Book",
-        Price: 700,
-        Description: "C book is awesome!",
-        Quantity: 1500,
-        Action: "3",
-      },
-    ]);
   }, []);
 
   const updateSideBar = () => {
@@ -67,6 +37,8 @@ const AppContextProvider = (props) => {
     setUser,
     productsData,
     setProductsData,
+    fetchAgain,
+    setFetchAgain,
   };
 
   return (
