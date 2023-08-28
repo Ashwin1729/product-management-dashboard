@@ -1,6 +1,9 @@
 const express = require("express");
+const path = require("path");
+
 const dotenv = require("dotenv");
 const sequelize = require("./config/database");
+
 const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
 const { notFound, errorHandler } = require("./middlewares/errorMiddlewares");
@@ -12,12 +15,28 @@ dotenv.config();
 
 server.use(express.json());
 
-server.get("/", (req, res) => {
-  res.send("API is running successfully ...");
-});
-
 server.use("/api/users", userRoutes);
 server.use("/api/products", productRoutes);
+
+// ------------------------- Deployment ----------------------------
+
+const _dirname = path.resolve();
+console.log(path.join(_dirname, "/frontend/build"));
+
+if (process.env.NODE_ENV === "production") {
+  server.use(express.static(path.join(_dirname, "/frontend/build")));
+
+  server.get("*", (req, res) => {
+    res.sendFile(path.resolve(_dirname, "frontend", "build", "index.html"));
+  });
+} else {
+  server.get("/", (req, res) => {
+    res.send("API is running successfuly");
+  });
+}
+
+// ------------------------- Deployment ----------------------------
+
 server.use(notFound);
 server.use(errorHandler);
 
