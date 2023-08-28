@@ -187,7 +187,7 @@ const NavBar = () => {
             component="div"
             sx={{ display: { xs: "none", sm: "block" } }}
           >
-            MUI
+            Product Pulse
           </Typography>
           <Search>
             <SearchIconWrapper>

@@ -90,12 +90,6 @@ const navLinks = [
   },
   {
     id: 4,
-    title: "Settings",
-    to: "/settings",
-    icon: <SettingsOutlinedIcon />,
-  },
-  {
-    id: 5,
     title: "Logout",
     to: "/logout",
     icon: <LogoutIcon />,

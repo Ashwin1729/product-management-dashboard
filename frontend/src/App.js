@@ -4,7 +4,6 @@ import "./App.css";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import Analytics from "./pages/Analytics";
-import Settings from "./pages/Settings";
 import NavBar from "./components/NavBar";
 import Login from "./components/authentication/Login";
 import SignUp from "./components/authentication/SignUp";
@@ -48,16 +47,7 @@ function App() {
             </>
           }
         />
-        <Route
-          path="/settings"
-          exact
-          element={
-            <>
-              <NavBar />
-              <Settings />
-            </>
-          }
-        />
+
         <Route
           path="/logout"
           exact

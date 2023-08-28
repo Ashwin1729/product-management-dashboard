@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { TextField } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -10,9 +10,15 @@ import IconButton from "@mui/material/IconButton";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./SignUp.module.css";
 import { AppContext } from "../../context/application-context";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import {
+  notifyIncompleteFields,
+  notifyError,
+  notifyPasswordMatch,
+  notifyRegisterationSuccessful,
+  notifyAlreadyLoggedIn,
+} from "../../utils/toastify-objects";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -34,53 +40,12 @@ const SignUp = () => {
   const user = appCtx.user;
   const setUser = appCtx.setUser;
 
-  const notifyIncompleteFields = () =>
-    toast.warn("Please fill all the details !", {
-      position: "bottom-left",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-
-  const notifyError = () =>
-    toast.error("Error Occured !", {
-      position: "bottom-left",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-
-  const notifyPasswordMatch = () =>
-    toast.warn("Passwords Do Not Match", {
-      position: "bottom-left",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-
-  const notifyRegisterationSuccessful = () =>
-    toast.success("Registeration Successful !", {
-      position: "bottom-left",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+  useEffect(() => {
+    if (user) {
+      notifyAlreadyLoggedIn();
+      navigate("/");
+    }
+  });
 
   const submitHandler = async (event) => {
     event.preventDefault();

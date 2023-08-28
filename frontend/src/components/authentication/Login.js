@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./Login.module.css";
 import { TextField } from "@mui/material";
 
@@ -11,9 +11,14 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
 import { Link, useNavigate } from "react-router-dom";
 import { AppContext } from "../../context/application-context";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import {
+  notifyIncompleteFields,
+  notifyError,
+  notifyLoginSuccessful,
+  notifyAlreadyLoggedIn,
+} from "../../utils/toastify-objects";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -27,41 +32,12 @@ const Login = () => {
   const user = appCtx.user;
   const setUser = appCtx.setUser;
 
-  const notifyIncompleteFields = () =>
-    toast.warn("Please fill all the details !", {
-      position: "bottom-left",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-
-  const notifyError = () =>
-    toast.error("Error Occured !", {
-      position: "bottom-left",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-
-  const notifyLoginSuccessful = () =>
-    toast.success("Login Successful !", {
-      position: "bottom-left",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+  useEffect(() => {
+    if (user) {
+      notifyAlreadyLoggedIn();
+      navigate("/");
+    }
+  });
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
