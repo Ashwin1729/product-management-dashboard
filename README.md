@@ -1,4 +1,4 @@
-# Echo Sphere
+# Product Management Dashboard
 
 Its a full stack product management dashboard.
 
