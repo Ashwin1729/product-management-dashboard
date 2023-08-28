@@ -1,11 +1,12 @@
 {
   "name": "product-management-dashboard",
   "version": "1.0.0",
-  "description": "A product management dashboard",
+  "description": "A full-stack product management dashboard",
   "main": "server.js",
   "scripts": {
     "start": "nodemon backend/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm install"
   },
   "author": "Ashwin Dhuriya",
   "license": "ISC",
