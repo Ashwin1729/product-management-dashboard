@@ -35,6 +35,7 @@ const Products = () => {
       setLoading(false);
     } catch (error) {
       notifyProductsError();
+      setLoading(false);
     }
   };
 
